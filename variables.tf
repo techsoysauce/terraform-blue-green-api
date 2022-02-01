@@ -69,3 +69,62 @@ variable "blue_instance_count" {
   type        = number
   default     = 2
 }
+
+variable "blue_api_version" {
+  description = "API version of blue environment"
+  type        = string
+  default     = "Version 1.0"
+}
+
+##New config for green environment##
+
+variable "enable_green_env" {
+  description = "Enable green environment"
+  type        = bool
+  default     = true
+}
+
+variable "green_instance_count" {
+  description = "Number of instances in green environment"
+  type        = number
+  default     = 2
+}
+
+variable "green_api_version" {
+  description = "API version of green environment"
+  type        = string
+  default     = "Version 1.1"
+}
+
+
+
+##Add traffic distribution for traffic routing to green environment##
+locals {
+  traffic_dist_map = {
+    blue = {
+      blue  = 100
+      green = 0
+    }
+    blue-90 = {
+      blue  = 90
+      green = 10
+    }
+    split = {
+      blue  = 50
+      green = 50
+    }
+    green-90 = {
+      blue  = 10
+      green = 90
+    }
+    green = {
+      blue  = 0
+      green = 100
+    }
+  }
+}
+
+variable "traffic_distribution" {
+  description = "Levels of traffic distribution: 'blue', 'blue-90', 'split', 'green-90', 'green'"
+  type        = string
+}
